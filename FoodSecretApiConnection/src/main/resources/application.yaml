@@ -1,0 +1,33 @@
+fatsecret:
+  oauth:
+    token-url: https://oauth.fatsecret.com/connect/token
+    client-id: e06b193dae2d4c28a821e0079c933be8
+    client-secret: d6f1cb06f45345d38afe76b9319d10d5
+    scope: basic
+server:
+  port: 8094
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+
+spring:
+  application:
+    name: FoodSecretApiConnection
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: 1234
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  web:
+    resources:
+      add-mappings: false

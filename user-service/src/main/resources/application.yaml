@@ -1,0 +1,40 @@
+server:
+  port: 8091
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
+
+spring:
+  application:
+    name: user-service
+  datasource:
+    url: jdbc:postgresql://localhost:5431/postgres
+    username: postgres
+    password: 1234
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  kafka:
+    consumer:
+      boostrap-server: localhost:9092, localhost:9094
+      key-serializer: org.apache.kafka.common.deserialization.StringDeserializer
+      value-serializer: org.springframework.kafka.support.serializer.ErrorHandlerDeserializer
+      properties:
+        spring:
+          deserializer:
+            value:
+              delegate:
+                class: org.springframework.kafka.support.serializer.JsonDeserializer
+              trusted:
+                packages: com.caliq.core
+  web:
+    resources:
+      add-mappings: false
