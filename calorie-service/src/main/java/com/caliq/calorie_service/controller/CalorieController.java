@@ -9,6 +9,8 @@ import com.caliq.calorie_service.service.CaloryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @RestController
@@ -38,6 +40,14 @@ public class CalorieController {
     @GetMapping("/mainpage")
     public ResponseEntity<MainPageResponse> showInfoForMainPage(@RequestParam("X-User-ID") Long userId){
         return ResponseEntity.ok(caloryService.showMainPageInfo(userId));
+    }
+
+    @PostMapping("/addwater")
+    public ResponseEntity<BigDecimal> addWaterController(@RequestParam("X-User-ID") Long userId,
+                                                         @RequestParam("Date") LocalDate time,
+                                                         @RequestParam("Water-To-Add") BigDecimal water){
+        BigDecimal waterResponse = caloryService.addWaterToLogs(userId, water, time);
+        return ResponseEntity.ok(waterResponse);
     }
     
 }

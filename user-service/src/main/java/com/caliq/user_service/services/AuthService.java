@@ -11,4 +11,5 @@ public interface AuthService {
 
     AuthResponseDto authenticateUser (LoginDto loginDto);
     String registrateUser(RegistrationDto registrationDto);
+    AuthResponseDto refreshToken(String refreshToken);
 }

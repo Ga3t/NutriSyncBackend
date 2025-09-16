@@ -4,10 +4,13 @@ import com.caliq.user_service.dto.AuthResponseDto;
 import com.caliq.user_service.dto.LoginDto;
 import com.caliq.user_service.dto.RegistrationDto;
 import com.caliq.user_service.exceptions.EmailAllreadyTakenException;
+import com.caliq.user_service.exceptions.RefreshTokenNotFoundException;
 import com.caliq.user_service.exceptions.UserNotFoundException;
 import com.caliq.user_service.exceptions.UsernameAllreadyTakenException;
+import com.caliq.user_service.models.RefreshToken;
 import com.caliq.user_service.models.UserEntity;
 import com.caliq.user_service.models.enums.Roles;
+import com.caliq.user_service.repository.RefreshTokenRepository;
 import com.caliq.user_service.repository.UserRepository;
 import com.caliq.user_service.security.JwtGenerator;
 import com.caliq.user_service.security.RefreshTokenGenerator;
@@ -23,6 +26,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 
@@ -36,15 +41,17 @@ public class AuthServiceImpl implements AuthService {
     private PasswordEncoder passwordEncoder;
     private RefreshTokenGenerator refreshTokenGenerator;
     private UserService userService;
+    private RefreshTokenRepository refreshTokenRepository;
 
     @Autowired
-    public AuthServiceImpl(AuthenticationManager authenticationManager, UserRepository userRepository, JwtGenerator jwtGenerator, PasswordEncoder passwordEncoder, RefreshTokenGenerator refreshTokenGenerator,UserService userService ) {
+    public AuthServiceImpl(AuthenticationManager authenticationManager, UserRepository userRepository, JwtGenerator jwtGenerator, PasswordEncoder passwordEncoder, RefreshTokenGenerator refreshTokenGenerator, UserService userService, RefreshTokenRepository refreshTokenRepository) {
         this.authenticationManager = authenticationManager;
         this.userRepository = userRepository;
         this.jwtGenerator = jwtGenerator;
         this.passwordEncoder = passwordEncoder;
         this.refreshTokenGenerator = refreshTokenGenerator;
         this.userService = userService;
+        this.refreshTokenRepository = refreshTokenRepository;
     }
 
     @Override
@@ -82,5 +89,22 @@ public class AuthServiceImpl implements AuthService {
         userRepository.save(userNew);
 
         return "User registered successfully!";
+    }
+
+    @Override
+    @Transactional
+    public AuthResponseDto refreshToken(String refreshToken) {
+
+        String refreshTokenNew = refreshTokenGenerator.refreshAccessToken(refreshToken);
+        RefreshToken refreshTokenOld = refreshTokenRepository.findByToken(refreshToken).orElseThrow(()-> new RefreshTokenNotFoundException("Refresh token not found"));
+        UserEntity user = refreshTokenOld.getUser();
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        user.getUsername(),
+                        user.getPassword()));
+        String jwtToken = jwtGenerator.generateToken(authentication, user.getUserId(), user.getRole());
+        AuthResponseDto responseDto= new AuthResponseDto(jwtToken, refreshToken);
+
+        return responseDto;
     }
 }

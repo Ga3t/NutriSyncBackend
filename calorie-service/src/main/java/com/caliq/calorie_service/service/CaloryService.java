@@ -8,6 +8,8 @@ import com.caliq.calorie_service.models.dto.MealDto;
 import com.caliq.calorie_service.models.types.MealType;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service
@@ -17,4 +19,5 @@ public interface CaloryService{
     MealByDateResponse getMealByDate(Long userId, LocalDateTime time);
     MainPageResponse showMainPageInfo(Long userId);
     void saveToCaloryLogs(MealDto mealDto, LocalDateTime time, UserModel user);
+    BigDecimal addWaterToLogs(Long userId, BigDecimal water, LocalDate date);
 }

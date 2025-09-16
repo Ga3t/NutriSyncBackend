@@ -10,7 +10,6 @@ public class MainPageResponse {
     private BigDecimal fatValue;
     private BigDecimal proteinValue;
     private BigDecimal carbohydrateValue;
-    private List<BigDecimal> caloryPerWeek;
     private BigDecimal waterValue;
     private BigDecimal waterGoal;
     private BigDecimal currentWeight;
@@ -45,14 +44,6 @@ public class MainPageResponse {
 
     public void setCarbohydrateValue(BigDecimal carbohydrateValue) {
         this.carbohydrateValue = carbohydrateValue;
-    }
-
-    public List<BigDecimal> getCaloryPerWeek() {
-        return caloryPerWeek;
-    }
-
-    public void setCaloryPerWeek(List<BigDecimal> caloryPerWeek) {
-        this.caloryPerWeek = caloryPerWeek;
     }
 
     public BigDecimal getWaterValue() {

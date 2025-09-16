@@ -18,7 +18,6 @@ public class AuthController {
 
     private AuthService authService;
 
-
     @Autowired
     public AuthController(AuthServiceImpl authService) {
         this.authService = authService;
@@ -34,5 +33,10 @@ public class AuthController {
     public ResponseEntity<String> registration(@RequestBody RegistrationDto registrationDto){
         String response = authService.registrateUser(registrationDto);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @GetMapping("refreshtoken")
+    public ResponseEntity<AuthResponseDto> refreshtoken (@CookieValue("refresh_token") String refreshToken){
+        return new ResponseEntity<>(authService.refreshToken(refreshToken), HttpStatus.OK);
     }
 }

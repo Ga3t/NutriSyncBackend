@@ -21,7 +21,7 @@ public class UserEntity {
     @Column(name="PASSWORD", nullable = false)
     private String password;
 
-    @Column(name="EMAIL", nullable = false)
+    @Column(name="EMAIL")
     private String email;
 
     @Column(name="REGISTRATION_DATE")

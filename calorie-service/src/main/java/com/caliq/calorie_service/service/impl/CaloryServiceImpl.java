@@ -1,5 +1,6 @@
 package com.caliq.calorie_service.service.impl;
 
+import com.caliq.calorie_service.exeptions.UserNotFoundException;
 import com.caliq.calorie_service.models.entity.CaloryLogsEntity;
 import com.caliq.calorie_service.models.response.MainPageResponse;
 import com.caliq.calorie_service.models.response.MealByDateResponse;
@@ -95,7 +96,6 @@ public class CaloryServiceImpl implements CaloryService {
 
         UserModel user = userRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
-
         LocalDate today = LocalDate.now();
 
         CaloryLogsEntity caloryLogsEntity = caloryLogsRepository.findByUserAndDate(user, today)
@@ -123,12 +123,6 @@ public class CaloryServiceImpl implements CaloryService {
                         LinkedHashMap::new
                 ));
 
-        List<BigDecimal> caloryPerWeek = new ArrayList<>(7);
-        for (int i = 0; i < 7; i++) {
-            LocalDate d = start.plusDays(i);
-            caloryPerWeek.add(totalByDate.getOrDefault(d, BigDecimal.ZERO));
-        }
-
         MainPageResponse response = new MainPageResponse();
         response.setCalorieGoal(nz(userRepository.findBmrByUserId(userId)));
         response.setWaterGoal(nz(userRepository.findWaterNeedsByUserId(userId)));
@@ -138,7 +132,7 @@ public class CaloryServiceImpl implements CaloryService {
         response.setWaterValue(nz(caloryLogsEntity.getDrankWaterMl()));
         response.setFatValue(nz(caloryLogsEntity.getFat()));
         response.setCarbohydrateValue(nz(caloryLogsEntity.getCarbohydrates()));
-        response.setCaloryPerWeek(caloryPerWeek);
+
 
         return response;
     }
@@ -192,6 +186,28 @@ public class CaloryServiceImpl implements CaloryService {
         if (hasFat)          caloryLogsEntity.setFat(nz(caloryLogsEntity.getFat()).add(totalFat));
 
         caloryLogsRepository.save(caloryLogsEntity);
+    }
+
+    @Override
+    public BigDecimal addWaterToLogs(Long userId, BigDecimal water, LocalDate date) {
+
+        UserModel user = userRepository.findById(userId).orElseThrow(()-> new UserNotFoundException("User not found"));
+
+        CaloryLogsEntity caloryLogs = caloryLogsRepository.findByUserAndDate(user,date).orElseGet(()->{
+            CaloryLogsEntity e = new CaloryLogsEntity();
+            e.setUser(user);
+            e.setDate(date);
+            e.setCarbohydrates(BigDecimal.valueOf(0));
+            e.setProtein(BigDecimal.valueOf(0));
+            e.setFat(BigDecimal.valueOf(0));
+            e.setDrankWaterMl(BigDecimal.valueOf(0));
+            e.setTotalCalory(BigDecimal.valueOf(0));
+            return e;
+        });
+
+        caloryLogs.setDrankWaterMl(caloryLogs.getDrankWaterMl().add(water));
+        caloryLogsRepository.save(caloryLogs);
+        return  caloryLogs.getDrankWaterMl();
     }
 
     private static BigDecimal nz(BigDecimal v) {
