@@ -22,6 +22,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -94,14 +95,17 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public AuthResponseDto refreshToken(String refreshToken) {
-
         String refreshTokenNew = refreshTokenGenerator.refreshAccessToken(refreshToken);
         RefreshToken refreshTokenOld = refreshTokenRepository.findByToken(refreshToken).orElseThrow(()-> new RefreshTokenNotFoundException("Refresh token not found"));
         UserEntity user = refreshTokenOld.getUser();
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        user.getUsername(),
-                        user.getPassword()));
+
+        UserDetails userDetails = userService.loadUserByUsername(user.getUsername());
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                userDetails,
+                null,
+                userDetails.getAuthorities()
+        );
+
         String jwtToken = jwtGenerator.generateToken(authentication, user.getUserId(), user.getRole());
         AuthResponseDto responseDto= new AuthResponseDto(jwtToken, refreshToken);
 
