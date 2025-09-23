@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public interface CaloryService{
 
     String saveMealToDb(Long userId, MealDto mealDto, LocalDateTime time, MealType mealType);
-    MealByDateResponse getMealByDate(Long userId, LocalDateTime time);
+    MealByDateResponse getMealByDate(Long userId, LocalDate time);
     MainPageResponse showMainPageInfo(Long userId);
     void saveToCaloryLogs(MealDto mealDto, LocalDateTime time, UserModel user);
     BigDecimal addWaterToLogs(Long userId, BigDecimal water, LocalDate date);

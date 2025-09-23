@@ -38,12 +38,6 @@ public class FoodModel {
     @Column(name = "FIBER")
     private BigDecimal fiber;
 
-    @Column(name = "SODIUM")
-    private BigDecimal sodium;
-
-    @Column(name = "IRON")
-    private BigDecimal iron;
-
     @Column(name = "CHOLESTEROL")
     private BigDecimal cholesterol;
 
@@ -117,22 +111,6 @@ public class FoodModel {
 
     public void setFiber(BigDecimal fiber) {
         this.fiber = fiber;
-    }
-
-    public BigDecimal getSodium() {
-        return sodium;
-    }
-
-    public void setSodium(BigDecimal sodium) {
-        this.sodium = sodium;
-    }
-
-    public BigDecimal getIron() {
-        return iron;
-    }
-
-    public void setIron(BigDecimal iron) {
-        this.iron = iron;
     }
 
     public BigDecimal getCholesterol() {

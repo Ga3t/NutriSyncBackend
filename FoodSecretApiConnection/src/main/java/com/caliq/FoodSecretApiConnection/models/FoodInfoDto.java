@@ -33,8 +33,6 @@ public record FoodInfoDto(
             @JsonProperty("fat") String fat,
             @JsonProperty("sugar") String sugar,
             @JsonProperty("fiber") String fiber,
-            @JsonProperty("sodium") String sodium,
-            @JsonProperty("iron") String iron,
             @JsonProperty("cholesterol") String cholesterol
     ) {}
 }

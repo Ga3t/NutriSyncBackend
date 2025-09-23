@@ -33,8 +33,8 @@ public class CalorieController {
 
     @GetMapping("/showmeal")
     public ResponseEntity<MealByDateResponse> showMeal(@RequestParam("X-User-ID") Long userId,
-                                                       @RequestParam("date") LocalDateTime time){
-        return null;
+                                                       @RequestParam("date") LocalDate time){
+        return ResponseEntity.ok(caloryService.getMealByDate(userId,time));
     }
 
     @GetMapping("/mainpage")

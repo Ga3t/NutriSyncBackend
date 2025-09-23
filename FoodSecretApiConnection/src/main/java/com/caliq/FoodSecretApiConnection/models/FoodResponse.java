@@ -13,13 +13,11 @@ public class FoodResponse {
     private BigDecimal fat;
     private BigDecimal sugar;
     private BigDecimal fiber;
-    private BigDecimal sodium;
-    private BigDecimal iron;
     private BigDecimal cholesterol;
 
     public FoodResponse() {}
 
-    public FoodResponse(String foodId, String name, String metricServingAmount, BigDecimal calories, BigDecimal protein, BigDecimal carbohydrate, BigDecimal fat, BigDecimal sugar, BigDecimal fiber, BigDecimal sodium, BigDecimal iron, BigDecimal cholesterol) {
+    public FoodResponse(String foodId, String name, String metricServingAmount, BigDecimal calories, BigDecimal protein, BigDecimal carbohydrate, BigDecimal fat, BigDecimal sugar, BigDecimal fiber, BigDecimal cholesterol) {
         this.foodId = foodId;
         this.name = name;
         this.metricServingAmount = metricServingAmount;
@@ -29,8 +27,6 @@ public class FoodResponse {
         this.fat = fat;
         this.sugar = sugar;
         this.fiber = fiber;
-        this.sodium = sodium;
-        this.iron = iron;
         this.cholesterol = cholesterol;
     }
 
@@ -104,22 +100,6 @@ public class FoodResponse {
 
     public void setFiber(BigDecimal fiber) {
         this.fiber = fiber;
-    }
-
-    public BigDecimal getSodium() {
-        return sodium;
-    }
-
-    public void setSodium(BigDecimal sodium) {
-        this.sodium = sodium;
-    }
-
-    public BigDecimal getIron() {
-        return iron;
-    }
-
-    public void setIron(BigDecimal iron) {
-        this.iron = iron;
     }
 
     public BigDecimal getCholesterol() {

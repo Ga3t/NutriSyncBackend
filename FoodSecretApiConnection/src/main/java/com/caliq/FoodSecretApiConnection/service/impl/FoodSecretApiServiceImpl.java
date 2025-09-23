@@ -78,8 +78,6 @@ public class FoodSecretApiServiceImpl implements FoodSecretApiService {
             response.setFat(foodmodel.getFat());
             response.setSugar(foodmodel.getSugar());
             response.setFiber(foodmodel.getFiber());
-            response.setSodium(foodmodel.getSodium());
-            response.setIron(foodmodel.getIron());
             response.setCholesterol(foodmodel.getCholesterol());
         }
         return response;
@@ -101,8 +99,6 @@ public class FoodSecretApiServiceImpl implements FoodSecretApiService {
                         parseBigDecimalSafe(s.fat()),
                         parseBigDecimalSafe(s.sugar()),
                         parseBigDecimalSafe(s.fiber()),
-                        parseBigDecimalSafe(s.sodium()),
-                        parseBigDecimalSafe(s.iron()),
                         parseBigDecimalSafe(s.cholesterol())
                 ))
                 .orElse(null);
@@ -118,10 +114,8 @@ public class FoodSecretApiServiceImpl implements FoodSecretApiService {
         foodModel.setCarbohydrate(foodResponse.getCarbohydrate());
         foodModel.setFiber(foodResponse.getFiber());
         foodModel.setSugar(foodResponse.getSugar());
-        foodModel.setSodium(foodResponse.getSodium());
         foodModel.setFat(foodResponse.getFat());
         foodModel.setCholesterol(foodResponse.getCholesterol());
-        foodModel.setIron(foodResponse.getIron());
 
         foodSecretRepository.save(foodModel);
     }

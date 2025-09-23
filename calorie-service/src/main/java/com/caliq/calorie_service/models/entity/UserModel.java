@@ -15,6 +15,8 @@ import java.util.List;
 @Table(name = "USER_DETAILS")
 public class UserModel {
 
+
+
     @Id
     @Column(name="USER_ID", unique = true)
     private Long id;

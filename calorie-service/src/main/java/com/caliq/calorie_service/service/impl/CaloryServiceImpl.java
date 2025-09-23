@@ -65,10 +65,10 @@ public class CaloryServiceImpl implements CaloryService {
     }
 
     @Override
-    public MealByDateResponse getMealByDate(Long userId, LocalDateTime time) {
-        LocalDate localDate = time.toLocalDate();
-        LocalDateTime startOfDay = localDate.atStartOfDay();
-        LocalDateTime endOfDay = localDate.atTime(23, 59, 59);
+    public MealByDateResponse getMealByDate(Long userId, LocalDate time) {
+
+        LocalDateTime startOfDay = time.atStartOfDay();
+        LocalDateTime endOfDay = time.atTime(23, 59, 59);
 
         List<MealEntity> mealsFromDb = caloryRepository.findByUser_IdAndDateTimeBetween(
                 userId, startOfDay, endOfDay
@@ -84,7 +84,7 @@ public class CaloryServiceImpl implements CaloryService {
                 })
                 .toList();
         MealByDateResponse response = new MealByDateResponse();
-        response.setDate(localDate.toString());
+        response.setDate(time.toString());
         response.setMeals(mealDtos);
 
         return response;
