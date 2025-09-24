@@ -1,6 +1,7 @@
 package com.caliq.api_conection_service.service.impl;
 
 import com.caliq.api_conection_service.exception.ProductNotFoundException;
+import com.caliq.api_conection_service.model.AddFoodDto;
 import com.caliq.api_conection_service.model.FoodDataResponse;
 import com.caliq.api_conection_service.model.FoodInfoDto;
 import com.caliq.api_conection_service.service.OpenFoodFactService;
@@ -44,5 +45,10 @@ public class OpenFoodFactServiceImpl implements OpenFoodFactService {
                 product.getNutriscoreData() != null ? product.getNutriscoreData().getGrade() : null,
                 product.getAllergens()
         );
+    }
+
+    @Override
+    public String addFoodByBarcode(AddFoodDto addFoodDto) {
+        return "";
     }
 }
