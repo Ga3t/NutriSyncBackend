@@ -3,78 +3,70 @@ package com.caliq.api_conection_service.model;
 
 import jdk.jfr.DataAmount;
 
+import java.math.BigDecimal;
+
 
 public class FoodDataResponse {
 
 
     private String code;
     private String name;
-    private Double fat;
-    private Double protein;
-    private Double carbohydrates;
+    private BigDecimal fat;
+    private BigDecimal protein;
+    private BigDecimal carbohydrates;
+    private BigDecimal sugar;
+    private BigDecimal fiber;
+    private BigDecimal cholesterol;
     private String nutriScore;
     private String[] allergens;
 
-    public FoodDataResponse(String code, String name, Double fat, Double protein, Double carbohydrates, String nutriScore, String[] allergens) {
-        this.code =code;
+    public FoodDataResponse(String code, String name, BigDecimal fat, BigDecimal protein, BigDecimal carbohydrates, BigDecimal sugar, BigDecimal fiber, BigDecimal cholesterol, String nutriScore, String[] allergens) {
+        this.code = code;
         this.name = name;
         this.fat = fat;
         this.protein = protein;
         this.carbohydrates = carbohydrates;
+        this.sugar = sugar;
+        this.fiber = fiber;
+        this.cholesterol = cholesterol;
         this.nutriScore = nutriScore;
         this.allergens = allergens;
-    }
-
-    public String getCode() {
-        return code;
     }
 
     public void setCode(String code) {
         this.code = code;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public void setName(String name) {
         this.name = name;
     }
 
-    public Double getFat() {
-        return fat;
-    }
-
-    public void setFat(Double fat) {
+    public void setFat(BigDecimal fat) {
         this.fat = fat;
     }
 
-    public Double getProtein() {
-        return protein;
-    }
-
-    public void setProtein(Double protein) {
+    public void setProtein(BigDecimal protein) {
         this.protein = protein;
     }
 
-    public Double getCarbohydrates() {
-        return carbohydrates;
-    }
-
-    public void setCarbohydrates(Double carbohydrates) {
+    public void setCarbohydrates(BigDecimal carbohydrates) {
         this.carbohydrates = carbohydrates;
     }
 
-    public String getNutriScore() {
-        return nutriScore;
+    public void setSugar(BigDecimal sugar) {
+        this.sugar = sugar;
+    }
+
+    public void setFiber(BigDecimal fiber) {
+        this.fiber = fiber;
+    }
+
+    public void setCholesterol(BigDecimal cholesterol) {
+        this.cholesterol = cholesterol;
     }
 
     public void setNutriScore(String nutriScore) {
         this.nutriScore = nutriScore;
-    }
-
-    public String[] getAllergens() {
-        return allergens;
     }
 
     public void setAllergens(String[] allergens) {

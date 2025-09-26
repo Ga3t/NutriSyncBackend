@@ -8,3 +8,16 @@ spring:
   redis:
     host: localhost
     port: 8001
+  datasource:
+    url: jdbc:postgresql://localhost:5435/postgres
+    username: postgres
+    password: 1234
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
