@@ -10,6 +10,7 @@ import com.caliq.api_conection_service.service.OpenFoodFactService;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestClient;
 
 
@@ -26,6 +27,7 @@ public class OpenFoodFactServiceImpl implements OpenFoodFactService {
     }
 
     @Cacheable(value = "foodDataCache", key = "#barcode")
+    @Transactional
     public FoodDataResponse getFoodInfo(String barcode) {
 
         FoodEntity foodEntity = openFoodFactRepository
@@ -75,9 +77,40 @@ public class OpenFoodFactServiceImpl implements OpenFoodFactService {
     }
 
     @Override
-    public String addFoodByBarcode(AddFoodDto addFoodDto) {
+    @Transactional
+    public FoodDataResponse addFoodByBarcode(AddFoodDto addFoodDto) {
 
+        FoodEntity foodEntity =openFoodFactRepository
+                .findById(Long.valueOf(addFoodDto.barcode()))
+                .orElseGet(()->{
+                    FoodEntity newFood = new FoodEntity(
+                            Long.valueOf(addFoodDto.barcode()),
+                            addFoodDto.brand_name(),
+                            addFoodDto.name(),
+                            addFoodDto.kcal(),
+                            addFoodDto.proteins(),
+                            addFoodDto.fat(),
+                            addFoodDto.carbs(),
+                            addFoodDto.fiber(),
+                            addFoodDto.sugar(),
+                            addFoodDto.cholesterol(),
+                            addFoodDto.grade()
+                    );
+                    return openFoodFactRepository.save(newFood);
+                });
 
-        return "";
+        FoodDataResponse response = new FoodDataResponse(
+                String.valueOf(foodEntity.getId()),
+                foodEntity.getBrand_name()+" "+ foodEntity.getName(),
+                foodEntity.getFat(),
+                foodEntity.getProteins(),
+                foodEntity.getCarbs(),
+                foodEntity.getSugar(),
+                foodEntity.getFiber(),
+                foodEntity.getCholesterol(),
+                foodEntity.getGrade(),
+                null
+        );
+        return response;
     }
 }

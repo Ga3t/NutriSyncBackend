@@ -9,5 +9,5 @@ import org.springframework.stereotype.Service;
 @Service
 public interface OpenFoodFactService {
     FoodDataResponse getFoodInfo(String barcode);
-    String addFoodByBarcode(AddFoodDto addFoodDto);
+    FoodDataResponse addFoodByBarcode(AddFoodDto addFoodDto);
 }

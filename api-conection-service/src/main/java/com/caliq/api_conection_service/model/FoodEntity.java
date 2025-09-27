@@ -133,4 +133,21 @@ public class FoodEntity {
     public void setGrade(String grade) {
         this.grade = grade;
     }
+
+    public FoodEntity(Long id, String brand_name, String name, BigDecimal kcal, BigDecimal proteins, BigDecimal fat, BigDecimal carbs, BigDecimal fiber, BigDecimal sugar, BigDecimal cholesterol, String grade) {
+        this.id = id;
+        this.brand_name = brand_name;
+        this.name = name;
+        this.kcal = kcal;
+        this.proteins = proteins;
+        this.fat = fat;
+        this.carbs = carbs;
+        this.fiber = fiber;
+        this.sugar = sugar;
+        this.cholesterol = cholesterol;
+        this.grade = grade;
+    }
+
+    public FoodEntity() {
+    }
 }

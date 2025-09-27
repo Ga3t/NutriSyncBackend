@@ -29,7 +29,7 @@ public class OpenFoodFactController {
 
 
     @PostMapping("/addbarcode/{barcode}")
-    public ResponseEntity<String> addFoodByBarcode(@RequestBody AddFoodDto addFoodDto){
+    public ResponseEntity<FoodDataResponse> addFoodByBarcode(@RequestBody AddFoodDto addFoodDto){
         return  ResponseEntity.ok(openFoodFactService.addFoodByBarcode(addFoodDto));
     }
 

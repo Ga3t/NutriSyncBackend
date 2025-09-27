@@ -14,6 +14,7 @@ public record AddFoodDto(
         @JsonProperty("carbs") BigDecimal carbs,
         @JsonProperty("fiber") BigDecimal fiber,
         @JsonProperty("sugar") BigDecimal sugar,
-        @JsonProperty("cholesterol") BigDecimal cholesterol
+        @JsonProperty("cholesterol") BigDecimal cholesterol,
+        @JsonProperty("grade") String grade
         ){
 }
