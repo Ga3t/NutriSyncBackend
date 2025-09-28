@@ -4,7 +4,6 @@ package com.caliq.calorie_service.service.impl;
 import com.caliq.calorie_service.exeptions.UserNotFoundException;
 import com.caliq.calorie_service.models.dto.UpdateUserDetailsDto;
 import com.caliq.calorie_service.models.dto.UserDetailsDto;
-import com.caliq.calorie_service.models.entity.WeightLogsEntity;
 import com.caliq.calorie_service.models.response.UserDetailsResponse;
 import com.caliq.calorie_service.models.entity.UserModel;
 import com.caliq.calorie_service.models.response.WeightLogsResponse;
@@ -14,6 +13,7 @@ import com.caliq.calorie_service.repository.UserRepository;
 import com.caliq.calorie_service.service.UserService;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -31,6 +31,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserDetailsResponse saveUserDetails(UserDetailsDto userDetailsDto, Long userId) {
         UserDetailsResponse userDetailsResponse = new UserDetailsResponse();
         UserModel userModel = new UserModel();
@@ -110,6 +111,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public String updateUserDetails(UpdateUserDetailsDto userDetailsDto, Long userId) {
         UserModel userModel = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(
@@ -188,9 +190,24 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public WeightLogsResponse setNewWeight(BigDecimal weightLogsResponse, Long userId) {
 
-        WeightLogsEntity  weightLogsEntity;
+        UserModel user = userRepository.findById(userId)
+                .orElseThrow(()-> new UserNotFoundException("No details about user not found"));
+
+        user.setCurrentWeight(weightLogsResponse);
+
+        BigDecimal waterNeedsMl = weightLogsResponse.multiply(BigDecimal.valueOf(35));
+        user.setWaterNeeds(waterNeedsMl);
+
+        int age = Period.between(user.getBirthDay(), LocalDate.now()).getYears();
+
+        if(user.getSex()==SexType.MALE){
+            BigDecimal maleBmr = calculateForMale(user.getHeight(), weightLogsResponse, age, user.getActivityType());}
+        else {
+            BigDecimal maleBmr = calculateForFemale(user.getHeight(), weightLogsResponse, age, user.getActivityType());
+        }
 
         return null;
     }

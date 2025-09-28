@@ -1,8 +1,5 @@
 package com.caliq.api_conection_service.model;
 
-
-import jdk.jfr.DataAmount;
-
 import java.math.BigDecimal;
 
 

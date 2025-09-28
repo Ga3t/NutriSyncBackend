@@ -1,5 +1,4 @@
-package com.caliq.calorie_service.models.entity;
-
+package com.caliq.analysis_service.model;
 
 import jakarta.persistence.*;
 
@@ -21,9 +20,8 @@ public class WeightLogsEntity {
     @Column(name="WEIGHT_DATE", nullable = false)
     private LocalDate weighingDate;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "USER_ID", nullable = false)
-    private UserModel user;
+    @Column(name="USER_ID")
+    private Long userId;
 
     public Long getId() {
         return id;
@@ -33,13 +31,9 @@ public class WeightLogsEntity {
         this.id = id;
     }
 
-    public UserModel getUser() {
-        return user;
-    }
+    public Long getUserId() {return userId;}
 
-    public void setUser(UserModel user) {
-        this.user = user;
-    }
+    public void setUserId(Long userId) {this.userId = userId;}
 
     public BigDecimal getWeight() {
         return weight;

@@ -3,12 +3,21 @@ package com.caliq.analysis_service.model;
 import java.math.BigDecimal;
 
 public record Report(
-        BigDecimal standardKcal,
-        BigDecimal userKcal,
-        BigDecimal standardFiber,
-        BigDecimal userFiber,
-        BigDecimal standardSugar,
-        BigDecimal userSugar,
-        BigDecimal standardCholesterol,
-        BigDecimal userCholesterol
-){}
+        StandardValuesForUser standardForUser,
+        RealUserValues realValues
+){
+    private record StandardValuesForUser(
+            BigDecimal standardKcal,
+            BigDecimal standardFiber,
+            BigDecimal standardSugar,
+            BigDecimal standardCholesterol,
+            BigDecimal standardWater
+    ){}
+    private record RealUserValues(
+            BigDecimal userKcal,
+            BigDecimal userFiber,
+            BigDecimal userSugar,
+            BigDecimal userCholesterol,
+            BigDecimal userWater
+    ){}
+}

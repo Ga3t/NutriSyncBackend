@@ -56,9 +56,6 @@ public class UserModel {
     private List<MealEntity> meals = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<WeightLogsEntity> weightLogs = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CaloryLogsEntity> caloryLogs = new ArrayList<>();
 
     public Long getId() {
@@ -99,15 +96,6 @@ public class UserModel {
 
     public void setRecommendedWeight(BigDecimal recommendedWeight) {
         this.recommendedWeight = recommendedWeight;
-    }
-
-
-    public List<WeightLogsEntity> getWeightLogs() {
-        return weightLogs;
-    }
-
-    public void setWeightLogs(List<WeightLogsEntity> weightLogs) {
-        this.weightLogs = weightLogs;
     }
 
     public List<MealEntity> getMeals() {
