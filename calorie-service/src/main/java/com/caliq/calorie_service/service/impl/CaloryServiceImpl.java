@@ -32,8 +32,6 @@ import java.util.stream.Collectors;
 @Primary
 public class CaloryServiceImpl implements CaloryService {
 
-
-
     private MealProducer mealProducer;
     private CaloryRepository caloryRepository;
     private UserRepository userRepository;
