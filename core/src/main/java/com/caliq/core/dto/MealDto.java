@@ -1,4 +1,4 @@
-package com.caliq.calorie_service.models.dto;
+package com.caliq.core.dto;
 
 
 import java.math.BigDecimal;

@@ -15,8 +15,6 @@ import java.util.List;
 @Table(name = "USER_DETAILS")
 public class UserModel {
 
-
-
     @Id
     @Column(name="USER_ID", unique = true)
     private Long id;
@@ -54,9 +52,6 @@ public class UserModel {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MealEntity> meals = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<CaloryLogsEntity> caloryLogs = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -152,13 +147,5 @@ public class UserModel {
 
     public void setWaterNeeds(BigDecimal waterNeeds) {
         this.waterNeeds = waterNeeds;
-    }
-
-    public List<CaloryLogsEntity> getCaloryLogs() {
-        return caloryLogs;
-    }
-
-    public void setCaloryLogs(List<CaloryLogsEntity> caloryLogs) {
-        this.caloryLogs = caloryLogs;
     }
 }

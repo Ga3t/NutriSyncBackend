@@ -4,8 +4,8 @@ package com.caliq.calorie_service.service;
 import com.caliq.calorie_service.models.entity.UserModel;
 import com.caliq.calorie_service.models.response.MainPageResponse;
 import com.caliq.calorie_service.models.response.MealByDateResponse;
-import com.caliq.calorie_service.models.dto.MealDto;
 import com.caliq.calorie_service.models.types.MealType;
+import com.caliq.core.dto.MealDto;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;

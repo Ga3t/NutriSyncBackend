@@ -191,7 +191,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public WeightLogsResponse setNewWeight(BigDecimal weightLogsResponse, Long userId) {
+    public BigDecimal setNewWeight(BigDecimal weightLogsResponse, Long userId) {
 
         UserModel user = userRepository.findById(userId)
                 .orElseThrow(()-> new UserNotFoundException("No details about user not found"));
@@ -203,13 +203,17 @@ public class UserServiceImpl implements UserService {
 
         int age = Period.between(user.getBirthDay(), LocalDate.now()).getYears();
 
+        BigDecimal bmr;
         if(user.getSex()==SexType.MALE){
-            BigDecimal maleBmr = calculateForMale(user.getHeight(), weightLogsResponse, age, user.getActivityType());}
+            bmr = calculateForMale(user.getHeight(), weightLogsResponse, age, user.getActivityType());}
         else {
-            BigDecimal maleBmr = calculateForFemale(user.getHeight(), weightLogsResponse, age, user.getActivityType());
+            bmr = calculateForFemale(user.getHeight(), weightLogsResponse, age, user.getActivityType());
         }
+        bmr= goalTypeCalculate(bmr, user.getGoalType());
 
-        return null;
+        user.setBmr(bmr);
+
+        return user.getCurrentWeight();
     }
 
 }

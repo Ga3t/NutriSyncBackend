@@ -1,6 +1,6 @@
 package com.caliq.calorie_service.models.response;
 
-import com.caliq.calorie_service.models.dto.MealDto;
+import com.caliq.core.dto.MealDto;
 
 import java.util.List;
 

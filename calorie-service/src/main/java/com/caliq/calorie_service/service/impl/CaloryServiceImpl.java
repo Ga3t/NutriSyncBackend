@@ -4,7 +4,6 @@ import com.caliq.calorie_service.exeptions.UserNotFoundException;
 import com.caliq.calorie_service.models.entity.CaloryLogsEntity;
 import com.caliq.calorie_service.models.response.MainPageResponse;
 import com.caliq.calorie_service.models.response.MealByDateResponse;
-import com.caliq.calorie_service.models.dto.MealDto;
 import com.caliq.calorie_service.models.entity.MealEntity;
 import com.caliq.calorie_service.models.entity.UserModel;
 import com.caliq.calorie_service.models.types.MealType;
@@ -12,6 +11,9 @@ import com.caliq.calorie_service.repository.CaloryLogsRepository;
 import com.caliq.calorie_service.repository.CaloryRepository;
 import com.caliq.calorie_service.repository.UserRepository;
 import com.caliq.calorie_service.service.CaloryService;
+import com.caliq.calorie_service.service.MealProducer;
+import com.caliq.core.dto.MealDto;
+import com.caliq.core.message.MealMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +23,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +34,7 @@ public class CaloryServiceImpl implements CaloryService {
 
 
 
+    private MealProducer mealProducer;
     private CaloryRepository caloryRepository;
     private UserRepository userRepository;
     private CaloryLogsRepository caloryLogsRepository;
@@ -40,7 +42,8 @@ public class CaloryServiceImpl implements CaloryService {
     @Autowired
     private ObjectMapper objectMapper;
 
-    public CaloryServiceImpl(CaloryRepository caloryRepository, UserRepository userRepository,  CaloryLogsRepository caloryLogsRepository) {
+    public CaloryServiceImpl(CaloryRepository caloryRepository, UserRepository userRepository,  CaloryLogsRepository caloryLogsRepository, MealProducer mealProducer) {
+        this.mealProducer = mealProducer;
         this.caloryRepository = caloryRepository;
         this.userRepository = userRepository;
         this.caloryLogsRepository = caloryLogsRepository;
@@ -61,6 +64,13 @@ public class CaloryServiceImpl implements CaloryService {
         caloryRepository.save(mealEntity);
 
         saveToCaloryLogs(mealDto, time, userEntity);
+
+        MealMessage message = new MealMessage();
+        message.setUserId(userId);
+        message.setMeal(mealDto);
+        message.setSentAt(LocalDateTime.now());
+
+        mealProducer.sendMeal(message);
         return "Meal saved successfully";
     }
 

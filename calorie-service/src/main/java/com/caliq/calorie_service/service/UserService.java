@@ -19,6 +19,6 @@ public interface UserService {
     BigDecimal calculateForFemale(BigDecimal height, BigDecimal weight, int ageRound, BigDecimal activityType);
     BigDecimal goalTypeCalculate(BigDecimal bmr, GoalType goalType);
     BigDecimal calculateRecommendedWeightRange(BigDecimal heightCm);
-    WeightLogsResponse setNewWeight(BigDecimal weight, Long userId);
+    BigDecimal setNewWeight(BigDecimal weight, Long userId);
 
 }

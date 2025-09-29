@@ -36,7 +36,7 @@ public class UserController {
     }
 
     @GetMapping("/newWeighing")
-    public ResponseEntity<WeightLogsResponse> setNewWeighing(@RequestParam("new_weight")BigDecimal newWeight,
+    public ResponseEntity<BigDecimal> setNewWeighing(@RequestParam("new_weight")BigDecimal newWeight,
                                                              @RequestParam("X-UserID-X")Long userId){
         return ResponseEntity.ok(userService.setNewWeight(newWeight, userId));
     }

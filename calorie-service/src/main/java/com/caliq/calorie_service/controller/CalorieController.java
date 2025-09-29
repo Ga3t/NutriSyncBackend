@@ -1,11 +1,11 @@
 package com.caliq.calorie_service.controller;
 
 
-import com.caliq.calorie_service.models.dto.MealDto;
 import com.caliq.calorie_service.models.response.MainPageResponse;
 import com.caliq.calorie_service.models.response.MealByDateResponse;
 import com.caliq.calorie_service.models.types.MealType;
 import com.caliq.calorie_service.service.CaloryService;
+import com.caliq.core.dto.MealDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
