@@ -1,8 +1,10 @@
 package com.caliq.analysis_service.service.impl;
 
 import com.caliq.analysis_service.model.AnalyseByDateRangeResponse;
+import com.caliq.analysis_service.model.ReportsEntity;
 import com.caliq.analysis_service.repository.FoodAnalyseRepository;
 import com.caliq.analysis_service.service.AnalyseFoodService;
+import com.caliq.core.dto.MealDto;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +34,11 @@ public class AnalyseFoodServiceImpl implements AnalyseFoodService{
     @Override
     public void takeDesInFoodSecretService(String code, Long UserId, LocalDateTime sendAt) {
 
+    }
+
+    @Override
+    public void createInitReport(MealDto mealDto, Long userId, LocalDateTime sendAt) {
+        ReportsEntity reportsEntity = new ReportsEntity();
     }
 
 

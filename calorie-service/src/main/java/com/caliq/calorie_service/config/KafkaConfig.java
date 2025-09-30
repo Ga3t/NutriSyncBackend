@@ -21,4 +21,14 @@ public class KafkaConfig {
                 .build();
 
     }
+
+    @Bean
+    public NewTopic WaterTopic() {
+        return TopicBuilder.name("add-water_events-topic")
+                .partitions(3)
+                .replicas(3)
+                .configs(Map.of("min.insync.replicas", "2"))
+                .build();
+
+    }
 }

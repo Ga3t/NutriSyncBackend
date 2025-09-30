@@ -73,10 +73,8 @@ public class UserServiceImpl implements UserService {
         BigDecimal recommendedWeight = calculateRecommendedWeightRange(userDetailsDto.height());
         userModel.setRecommendedWeight(recommendedWeight);
         userRepository.save(userModel);
-
         userDetailsResponse.setBmr(caloriesTarget);
         userDetailsResponse.setAvgweight(recommendedWeight);
-
 
         return userDetailsResponse;
     }

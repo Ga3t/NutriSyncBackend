@@ -1,8 +1,11 @@
 package com.caliq.analysis_service.service.kafka;
 
+import com.caliq.analysis_service.service.AnalyseFoodService;
 import com.caliq.core.dto.MealDto;
+import com.caliq.core.message.InfoAboutProductMessage;
 import com.caliq.core.message.MealMessage;
 import com.caliq.core.message.ProductMessage;
+import com.caliq.core.response.FoodResponse;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 
@@ -14,16 +17,18 @@ import java.util.Objects;
 public class AnalyseConsumer {
 
     AnalyseProducer analyseProducer;
+    AnalyseFoodService analyseFoodService;
 
-    public AnalyseConsumer(AnalyseProducer analyseProducer) {
+    public AnalyseConsumer(AnalyseProducer analyseProducer, AnalyseFoodService analyseFoodService) {
         this.analyseProducer = analyseProducer;
+        this.analyseFoodService = analyseFoodService;
     }
 
     @KafkaListener(topics = "analise-meal_events-topic", groupId = "food-analysis-group",
             containerFactory = "kafkaListenerContainerFactory")
     public void consumeMeal(MealMessage message) {
         MealDto mealDto = message.getMeal();
-
+        analyseFoodService.createInitReport(mealDto, message.getUserId(), message.getSentAt());
         List<String> listToOpenFoodFactService = new ArrayList<>();
         List<String> listToFoodSecretService = new ArrayList<>();
 
@@ -49,5 +54,10 @@ public class AnalyseConsumer {
                     message.getSentAt());
             analyseProducer.sendProductToFoodSecretService(productMessage);
         }
+    }
+
+    @KafkaListener(topics = "product-food-secret-response_events-topic", groupId = "food-analysis-group",
+            containerFactory = "kafkaListenerContainerFactory")
+    public void getInfoAboutProducts(InfoAboutProductMessage message){
     }
 }

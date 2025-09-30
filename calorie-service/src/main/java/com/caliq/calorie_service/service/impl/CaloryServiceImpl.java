@@ -215,6 +215,9 @@ public class CaloryServiceImpl implements CaloryService {
 
         caloryLogs.setDrankWaterMl(caloryLogs.getDrankWaterMl().add(water));
         caloryLogsRepository.save(caloryLogs);
+        //TODO
+//        mealProducer.sendWater();
+
         return  caloryLogs.getDrankWaterMl();
     }
 
