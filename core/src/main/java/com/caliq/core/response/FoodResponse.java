@@ -1,4 +1,4 @@
-package com.caliq.FoodSecretApiConnection.models;
+package com.caliq.core.response;
 
 import java.math.BigDecimal;
 

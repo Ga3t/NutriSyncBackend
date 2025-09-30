@@ -5,7 +5,7 @@ fatsecret:
     client-secret: d6f1cb06f45345d38afe76b9319d10d5
     scope: basic
 server:
-  port: 8094
+  port: 8095
 logging:
   level:
     org:
@@ -13,6 +13,18 @@ logging:
         security: DEBUG
 
 spring:
+  kafka:
+    bootstrap-servers: localhost:9092,localhost:9093,localhost:9094
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+    consumer:
+      group-id: food-analysis-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
   application:
     name: FoodSecretApiConnection
   datasource:

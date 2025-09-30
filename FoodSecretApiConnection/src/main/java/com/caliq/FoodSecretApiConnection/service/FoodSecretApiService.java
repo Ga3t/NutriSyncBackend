@@ -1,9 +1,8 @@
 package com.caliq.FoodSecretApiConnection.service;
 
 
-import com.caliq.FoodSecretApiConnection.models.FoodResponse;
+import com.caliq.core.response.FoodResponse;
 import com.caliq.FoodSecretApiConnection.models.FoodSearchResponse;
-import com.caliq.FoodSecretApiConnection.models.RequestDto;
 import org.springframework.stereotype.Service;
 
 @Service

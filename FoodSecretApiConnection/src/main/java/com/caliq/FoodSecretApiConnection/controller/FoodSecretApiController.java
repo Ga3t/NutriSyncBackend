@@ -1,7 +1,7 @@
 package com.caliq.FoodSecretApiConnection.controller;
 
 
-import com.caliq.FoodSecretApiConnection.models.FoodResponse;
+import com.caliq.core.response.FoodResponse;
 import com.caliq.FoodSecretApiConnection.models.FoodSearchResponse;
 import com.caliq.FoodSecretApiConnection.service.FoodSecretApiService;
 import org.springframework.http.ResponseEntity;

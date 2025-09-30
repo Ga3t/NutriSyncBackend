@@ -4,7 +4,7 @@ import com.caliq.FoodSecretApiConnection.exceptions.ProductNotFoundException;
 import com.caliq.FoodSecretApiConnection.models.*;
 import com.caliq.FoodSecretApiConnection.repository.FoodSecretRepository;
 import com.caliq.FoodSecretApiConnection.service.FoodSecretApiService;
-import com.caliq.FoodSecretApiConnection.utils.StringBigDecimalParser;
+import com.caliq.core.response.FoodResponse;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;

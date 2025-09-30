@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Service
 @Primary
@@ -22,4 +23,16 @@ public class AnalyseFoodServiceImpl implements AnalyseFoodService{
     public AnalyseByDateRangeResponse analyseByDateRange(Long userId, LocalDate startDate, LocalDate endDate) {
         return null;
     }
+
+    @Override
+    public void takeDesInOpenFoodFactService(String code, Long UserId, LocalDateTime sendAt) {
+
+    }
+
+    @Override
+    public void takeDesInFoodSecretService(String code, Long UserId, LocalDateTime sendAt) {
+
+    }
+
+
 }

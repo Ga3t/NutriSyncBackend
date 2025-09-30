@@ -3,6 +3,9 @@ server:
 spring:
   kafka:
     bootstrap-servers: localhost:9092,localhost:9093,localhost:9094
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
     consumer:
       group-id: food-analysis-group
       auto-offset-reset: earliest
