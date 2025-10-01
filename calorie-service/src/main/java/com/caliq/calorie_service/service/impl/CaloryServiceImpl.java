@@ -11,9 +11,10 @@ import com.caliq.calorie_service.repository.CaloryLogsRepository;
 import com.caliq.calorie_service.repository.CaloryRepository;
 import com.caliq.calorie_service.repository.UserRepository;
 import com.caliq.calorie_service.service.CaloryService;
-import com.caliq.calorie_service.service.MealProducer;
+import com.caliq.calorie_service.service.EventProducer;
 import com.caliq.core.dto.MealDto;
 import com.caliq.core.message.MealMessage;
+import com.caliq.core.message.WaterMessage;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ import java.util.stream.Collectors;
 @Primary
 public class CaloryServiceImpl implements CaloryService {
 
-    private MealProducer mealProducer;
+    private EventProducer eventProducer;
     private CaloryRepository caloryRepository;
     private UserRepository userRepository;
     private CaloryLogsRepository caloryLogsRepository;
@@ -40,8 +41,8 @@ public class CaloryServiceImpl implements CaloryService {
     @Autowired
     private ObjectMapper objectMapper;
 
-    public CaloryServiceImpl(CaloryRepository caloryRepository, UserRepository userRepository,  CaloryLogsRepository caloryLogsRepository, MealProducer mealProducer) {
-        this.mealProducer = mealProducer;
+    public CaloryServiceImpl(CaloryRepository caloryRepository, UserRepository userRepository,  CaloryLogsRepository caloryLogsRepository, EventProducer eventProducer) {
+        this.eventProducer = eventProducer;
         this.caloryRepository = caloryRepository;
         this.userRepository = userRepository;
         this.caloryLogsRepository = caloryLogsRepository;
@@ -68,7 +69,7 @@ public class CaloryServiceImpl implements CaloryService {
         message.setMeal(mealDto);
         message.setSentAt(LocalDateTime.now());
 
-        mealProducer.sendMeal(message);
+        eventProducer.sendEvent("analise-meal_events-topic", message.getUserId(), message);
         return "Meal saved successfully";
     }
 
@@ -215,8 +216,12 @@ public class CaloryServiceImpl implements CaloryService {
 
         caloryLogs.setDrankWaterMl(caloryLogs.getDrankWaterMl().add(water));
         caloryLogsRepository.save(caloryLogs);
-        //TODO
-//        mealProducer.sendWater();
+
+        WaterMessage waterMessage = new WaterMessage();
+        waterMessage.setWaterMl(water);
+        waterMessage.setUserId(userId);
+        waterMessage.setSendAt(LocalDateTime.now());
+        eventProducer.sendEvent("analise-meal_events-topic", waterMessage.getUserId(), waterMessage);
 
         return  caloryLogs.getDrankWaterMl();
     }

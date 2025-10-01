@@ -10,7 +10,9 @@ import com.caliq.calorie_service.models.response.WeightLogsResponse;
 import com.caliq.calorie_service.models.types.GoalType;
 import com.caliq.calorie_service.models.types.SexType;
 import com.caliq.calorie_service.repository.UserRepository;
+import com.caliq.calorie_service.service.EventProducer;
 import com.caliq.calorie_service.service.UserService;
+import com.caliq.core.message.WeightMessage;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,15 +20,18 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Period;
 
 @Service
 @Primary
 public class UserServiceImpl implements UserService {
 
+    private EventProducer eventProducer;
     private final UserRepository userRepository;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(EventProducer eventProducer, UserRepository userRepository) {
+        this.eventProducer = eventProducer;
         this.userRepository = userRepository;
     }
 
@@ -75,6 +80,13 @@ public class UserServiceImpl implements UserService {
         userRepository.save(userModel);
         userDetailsResponse.setBmr(caloriesTarget);
         userDetailsResponse.setAvgweight(recommendedWeight);
+
+        WeightMessage message = new WeightMessage();
+        message.setUserId(userId);
+        message.setWeight(userDetailsDto.currentWeight());
+        message.setSendAt(LocalDate.now());
+
+        eventProducer.sendEvent("new-weight_event_topic", message.getUserId(), message);
 
         return userDetailsResponse;
     }
@@ -173,10 +185,16 @@ public class UserServiceImpl implements UserService {
 
         userRepository.save(userModel);
 
+        if(userDetailsDto.curentWeight() !=null){
+            WeightMessage message = new WeightMessage();
+            message.setUserId(userId);
+            message.setWeight(userDetailsDto.curentWeight());
+            message.setSendAt(LocalDate.now());
+            eventProducer.sendEvent("new-weight_event_topic", message.getUserId(), message);
+        }
         return "User details updated successfully";
     }
-
-
+    
     @Override
     public BigDecimal calculateRecommendedWeightRange(BigDecimal heightCm) {
         BigDecimal heightM = heightCm.divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
