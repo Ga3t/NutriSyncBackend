@@ -1,13 +1,16 @@
 package com.caliq.analysis_service.service.kafka;
 
+import com.caliq.analysis_service.model.WeightLogsEntity;
+import com.caliq.analysis_service.repository.WeightLogsRepository;
 import com.caliq.analysis_service.service.AnalyseFoodService;
 import com.caliq.core.dto.MealDto;
 import com.caliq.core.message.InfoAboutProductMessage;
 import com.caliq.core.message.MealMessage;
 import com.caliq.core.message.ProductMessage;
-import com.caliq.core.response.FoodResponse;
+import com.caliq.core.message.WeightMessage;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,12 +19,14 @@ import java.util.Objects;
 @Service
 public class AnalyseConsumer {
 
-    AnalyseProducer analyseProducer;
-    AnalyseFoodService analyseFoodService;
+    private AnalyseProducer analyseProducer;
+    private AnalyseFoodService analyseFoodService;
+    private WeightLogsRepository weightLogsRepository;
 
-    public AnalyseConsumer(AnalyseProducer analyseProducer, AnalyseFoodService analyseFoodService) {
+    public AnalyseConsumer(AnalyseProducer analyseProducer, AnalyseFoodService analyseFoodService, WeightLogsRepository weightLogsRepository) {
         this.analyseProducer = analyseProducer;
         this.analyseFoodService = analyseFoodService;
+        this.weightLogsRepository = weightLogsRepository;
     }
 
     @KafkaListener(topics = "analise-meal_events-topic", groupId = "food-analysis-group",
@@ -56,8 +61,26 @@ public class AnalyseConsumer {
         }
     }
 
-    @KafkaListener(topics = "product-food-secret-response_events-topic", groupId = "food-analysis-group",
+    @KafkaListener(topics = "product-food-response_events-topic", groupId = "food-analysis-group",
             containerFactory = "kafkaListenerContainerFactory")
     public void getInfoAboutProducts(InfoAboutProductMessage message){
+    }
+
+    @KafkaListener(topics = "new-weight_event_topic", groupId = "food-analysis-group",
+            containerFactory = "kafkaListenerContainerFactory")
+    @Transactional
+    public void consumeNewWeight(WeightMessage message) {
+        WeightLogsEntity weightLogs = weightLogsRepository
+                .findByUserIdAndWeighingDate(message.getUserId(), message.getSendAt())
+                .map(existing -> {
+                    existing.setWeight(message.getWeight());
+                    return existing;
+                })
+                .orElseGet(() -> new WeightLogsEntity(
+                        message.getWeight(),
+                        message.getSendAt(),
+                        message.getUserId()
+                ));
+        weightLogsRepository.save(weightLogs);
     }
 }

@@ -9,6 +9,7 @@ public class InfoAboutProductMessage {
     List<FoodResponse>foodResponses;
     Long userId;
     LocalDateTime sendAt;
+    String serviceName;
 
     public InfoAboutProductMessage() {
     }
@@ -41,5 +42,13 @@ public class InfoAboutProductMessage {
 
     public void setSendAt(LocalDateTime sendAt) {
         this.sendAt = sendAt;
+    }
+
+    public String getServiceName() {
+        return serviceName;
+    }
+
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
     }
 }

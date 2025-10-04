@@ -50,4 +50,13 @@ public class WeightLogsEntity {
     public void setWeighingDate(LocalDate weighingDate) {
         this.weighingDate = weighingDate;
     }
+
+    public WeightLogsEntity() {
+    }
+
+    public WeightLogsEntity(BigDecimal weight, LocalDate weighingDate, Long userId) {
+        this.weight = weight;
+        this.weighingDate = weighingDate;
+        this.userId = userId;
+    }
 }

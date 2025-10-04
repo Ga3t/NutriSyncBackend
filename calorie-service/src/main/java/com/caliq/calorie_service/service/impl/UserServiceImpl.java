@@ -228,6 +228,13 @@ public class UserServiceImpl implements UserService {
         bmr= goalTypeCalculate(bmr, user.getGoalType());
 
         user.setBmr(bmr);
+        userRepository.save(user);
+
+        WeightMessage message = new WeightMessage();
+        message.setUserId(userId);
+        message.setWeight(weightLogsResponse);
+        message.setSendAt(LocalDate.now());
+        eventProducer.sendEvent("new-weight_event_topic", message.getUserId(), message);
 
         return user.getCurrentWeight();
     }
