@@ -1,29 +1,25 @@
-package com.caliq.api_conection_service.controller;
+package com.caliq.FoodSecretApiConnection.controller;
 
-import com.caliq.api_conection_service.model.ErrorResponse;
-import com.caliq.api_conection_service.exception.ProductNotFoundException;
-import org.hibernate.exception.ConstraintViolationException;
+
+import com.caliq.FoodSecretApiConnection.exceptions.ProductNotFoundException;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.support.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.nio.file.AccessDeniedException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-@RestControllerAdvice
-public class ControllerExceptionHandler {
+@ControllerAdvice
+public class GlobalExceptionHandler {
 
     @ExceptionHandler(ProductNotFoundException.class)
-    public ResponseEntity<ErrorResponse> productBotFoundHandler(ProductNotFoundException exception){
-
-        ErrorResponse response =new ErrorResponse();
-        response.setMessage(exception.getMessage());
-        response.setStatus(404);
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    public ResponseEntity<?> handleUserNotFound(ProductNotFoundException ex) {
+        return buildResponse(HttpStatus.NOT_FOUND, ex.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -69,5 +65,4 @@ public class ControllerExceptionHandler {
         if (details != null) body.put("details", details);
         return new ResponseEntity<>(body, status);
     }
-
 }

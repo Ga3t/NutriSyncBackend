@@ -1,17 +1,18 @@
 server:
   port: 8093
+
 spring:
   application:
-  name: api-conection-service
+    name: api-connection-service
   cache:
     type: redis
   redis:
-    host: localhost
-    port: 8001
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:8001}
   datasource:
-    url: jdbc:postgresql://localhost:5435/postgres
-    username: postgres
-    password: 1234
+    url: ${DB_URL:jdbc:postgresql://localhost:5435/postgres}
+    username: ${DB_USER:postgres}
+    password: ${DB_PASSWORD:1234}
     driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:

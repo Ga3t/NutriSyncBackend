@@ -2,27 +2,28 @@ server:
   port: 8090
 debug: true
 spring:
+  main:
+    web-application-type: reactive
   application:
     name: api-gateway
   cloud:
     gateway:
       routes:
         - id: auth_route
-          uri: http://localhost:8091
+          uri: ${AUTH_SERVICE_URI:http://localhost:8091}
           predicates:
             - Path=/auth/**
-        - id: ledger_route
-          uri: http://localhost:8092
+        - id: calory_route
+          uri: ${LEDGER_SERVICE_URI:http://localhost:8092}
           predicates:
             - Path=/calapp/**
         - id: product_route
-          uri: http://localhost:8093
+          uri: ${PRODUCT_SERVICE_URI:http://localhost:8093}
           predicates:
             - Path=/product/**
 
-
   kafka:
-    bootstrap-servers: 192.168.0.33:9092, 192.168.0.33:9093, 192.168.0.33:9094
+    bootstrap-servers: ${KAFKA_BOOTSTRAP:localhost:9092}
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
@@ -34,7 +35,7 @@ spring:
         enable.idempotence: true
         max.in.flight.requests.per.connection: 5
     consumer:
-      group-id: ledger-service-consumer
+      group-id: ${KAFKA_CONSUMER_GROUP:ledger-service-consumer}
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
 
