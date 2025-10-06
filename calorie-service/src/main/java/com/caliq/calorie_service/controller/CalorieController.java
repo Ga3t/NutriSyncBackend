@@ -24,29 +24,33 @@ public class CalorieController {
     }
 
     @PostMapping("/savemeal")
-    public ResponseEntity<String> saveMeal (@RequestParam("X-User-ID") Long userId,
+    public ResponseEntity<String> saveMeal (@RequestHeader("X-User-ID") String userId,
                                             @RequestParam("MealType") MealType mealType,
                                             @RequestParam("DateTime")LocalDateTime dateTime,
                                             @RequestBody MealDto mealDto) {
-        return ResponseEntity.ok(caloryService.saveMealToDb(userId, mealDto, dateTime,mealType));
+        Long userID = Long.parseLong(userId);
+        return ResponseEntity.ok(caloryService.saveMealToDb(userID, mealDto, dateTime,mealType));
     }
 
     @GetMapping("/showmeal")
-    public ResponseEntity<MealByDateResponse> showMeal(@RequestParam("X-User-ID") Long userId,
+    public ResponseEntity<MealByDateResponse> showMeal(@RequestHeader("X-User-ID") String userId,
                                                        @RequestParam("date") LocalDate time){
-        return ResponseEntity.ok(caloryService.getMealByDate(userId,time));
+        Long userID = Long.parseLong(userId);
+        return ResponseEntity.ok(caloryService.getMealByDate(userID,time));
     }
 
     @GetMapping("/mainpage")
-    public ResponseEntity<MainPageResponse> showInfoForMainPage(@RequestParam("X-User-ID") Long userId){
-        return ResponseEntity.ok(caloryService.showMainPageInfo(userId));
+    public ResponseEntity<MainPageResponse> showInfoForMainPage(@RequestHeader("X-User-ID") String userId){
+        Long userID = Long.parseLong(userId);
+        return ResponseEntity.ok(caloryService.showMainPageInfo(userID));
     }
 
     @PostMapping("/addwater")
-    public ResponseEntity<BigDecimal> addWaterController(@RequestParam("X-User-ID") Long userId,
+    public ResponseEntity<BigDecimal> addWaterController(@RequestHeader("X-User-ID") String userId,
                                                          @RequestParam("Date") LocalDate time,
                                                          @RequestParam("Water-To-Add") BigDecimal water){
-        BigDecimal waterResponse = caloryService.addWaterToLogs(userId, water, time);
+        Long userID = Long.parseLong(userId);
+        BigDecimal waterResponse = caloryService.addWaterToLogs(userID, water, time);
         return ResponseEntity.ok(waterResponse);
     }
     

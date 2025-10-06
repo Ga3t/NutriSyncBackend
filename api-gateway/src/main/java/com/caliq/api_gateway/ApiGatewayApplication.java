@@ -13,19 +13,19 @@ public class ApiGatewayApplication {
 		SpringApplication.run(ApiGatewayApplication.class, args);
 	}
 
-	@Bean
-	public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
-		return builder.routes()
-				.route("auth_route", r -> r.path("/auth/**")
-						.uri("http://localhost:8091")
-				)
-				.route("ledger_route", r -> r.path("/calapp/**")
-						.uri("http://localhost:8092")
-				)
-				.route("open_food_fact_api", r-> r.path("/product/**")
-						.uri("http:/localhost:8093"))
-				.build();
-
-	}
+//	@Bean
+//	public RouteLocator customRouteLocator(RouteLocatorBuilder builder) {
+//		return builder.routes()
+//				.route("auth_route", r -> r.path("/auth/**")
+//						.uri("http://localhost:8091")
+//				)
+//				.route("ledger_route", r -> r.path("/calapp/**")
+//						.uri("http://localhost:8092")
+//				)
+//				.route("open_food_fact_api", r-> r.path("/product/**")
+//						.uri("http:/localhost:8093"))
+//				.build();
+//
+//	}
 
 }

@@ -9,6 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface WeightLogsRepository extends JpaRepository<WeightLogsEntity, Long> {
-
     Optional<WeightLogsEntity> findByUserIdAndWeighingDate(Long userId, LocalDate time);
 }

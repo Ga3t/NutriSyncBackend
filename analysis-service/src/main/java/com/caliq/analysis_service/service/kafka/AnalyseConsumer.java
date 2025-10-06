@@ -1,6 +1,8 @@
 package com.caliq.analysis_service.service.kafka;
 
+import com.caliq.analysis_service.model.ReportsEntity;
 import com.caliq.analysis_service.model.WeightLogsEntity;
+import com.caliq.analysis_service.repository.ReportsRepository;
 import com.caliq.analysis_service.repository.WeightLogsRepository;
 import com.caliq.analysis_service.service.AnalyseFoodService;
 import com.caliq.core.dto.MealDto;
@@ -8,6 +10,7 @@ import com.caliq.core.message.InfoAboutProductMessage;
 import com.caliq.core.message.MealMessage;
 import com.caliq.core.message.ProductMessage;
 import com.caliq.core.message.WeightMessage;
+import com.caliq.core.response.FoodResponse;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,11 +25,13 @@ public class AnalyseConsumer {
     private AnalyseProducer analyseProducer;
     private AnalyseFoodService analyseFoodService;
     private WeightLogsRepository weightLogsRepository;
+    private ReportsRepository reportsRepository;
 
-    public AnalyseConsumer(AnalyseProducer analyseProducer, AnalyseFoodService analyseFoodService, WeightLogsRepository weightLogsRepository) {
+    public AnalyseConsumer(AnalyseProducer analyseProducer, AnalyseFoodService analyseFoodService, WeightLogsRepository weightLogsRepository, ReportsRepository reportsRepository) {
         this.analyseProducer = analyseProducer;
         this.analyseFoodService = analyseFoodService;
         this.weightLogsRepository = weightLogsRepository;
+        this.reportsRepository = reportsRepository;
     }
 
     @KafkaListener(topics = "analise-meal_events-topic", groupId = "food-analysis-group",
@@ -64,6 +69,8 @@ public class AnalyseConsumer {
     @KafkaListener(topics = "product-food-response_events-topic", groupId = "food-analysis-group",
             containerFactory = "kafkaListenerContainerFactory")
     public void getInfoAboutProducts(InfoAboutProductMessage message){
+        ReportsEntity reportsEntity = reportsRepository.findByUserIdAndDate(message.getUserId(), message.getSendAt().toLocalDate())
+                .orElseGet(()-> new ReportsEntity());
     }
 
     @KafkaListener(topics = "new-weight_event_topic", groupId = "food-analysis-group",
