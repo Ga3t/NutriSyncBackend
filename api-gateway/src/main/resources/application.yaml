@@ -1,24 +1,44 @@
 server:
   port: 8090
+
 debug: true
+
 spring:
   application:
     name: api-gateway
+
   cloud:
     gateway:
       routes:
+        # ---------------- Auth Service ----------------
         - id: auth_route
-          uri: ${AUTH_SERVICE_URI:http://localhost:8091}
+          uri: ${AUTH_SERVICE_URI:http://user-service:8091}
           predicates:
             - Path=/auth/**
-        - id: calory_route
-          uri: ${LEDGER_SERVICE_URI:http://localhost:8092}
+
+        # ---------------- User Details Service ----------------
+        - id: userdetails_route
+          uri: ${LEDGER_SERVICE_URI:http://calorie-service:8092}
+          predicates:
+            - Path=/userdetails/**
+
+        # ---------------- Calorie Service ----------------
+        - id: calapp_route
+          uri: ${LEDGER_SERVICE_URI:http://calorie-service:8092}
           predicates:
             - Path=/calapp/**
+
+        # ---------------- API Connection Service ----------------
         - id: product_route
-          uri: ${PRODUCT_SERVICE_URI:http://localhost:8093}
+          uri: ${PRODUCT_SERVICE_URI:http://api-connection-service:8093}
           predicates:
             - Path=/product/**
+
+        # ---------------- FatSecret / FoodSecret Service ----------------
+        - id: foodsecret_route
+          uri: ${FOODSECRET_SERVICE_URI:http://fatsecret-service:8095}
+          predicates:
+            - Path=/foodsecret/**
 
   kafka:
     bootstrap-servers: ${KAFKA_BOOTSTRAP:localhost:9092}
@@ -36,15 +56,3 @@ spring:
       group-id: ${KAFKA_CONSUMER_GROUP:ledger-service-consumer}
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-
-#  cloud:
-#    gateway:
-#      routes:
-#        - id: auth_route
-#          uri: http://localhost:8091
-#          predicates:
-#            - Path=/auth/**
-#        - id: calapp_route
-#          uri: http://localhost:8092
-#          predicates:
-#            - Path=/calapp/**

@@ -183,8 +183,8 @@ services:
       DB_PASSWORD: 1234
       KAFKA_BOOTSTRAP: kafka-0-s:9092,kafka-1-s:9092,kafka-2-s:9092
       KAFKA_GROUP_ID: food-analysis-group
-      FATSECRET_CLIENT_ID: your_client_id_here
-      FATSECRET_CLIENT_SECRET: your_client_secret_here
+      FATSECRET_CLIENT_ID: e06b193dae2d4c28a821e0079c933be8
+      FATSECRET_CLIENT_SECRET: d6f1cb06f45345d38afe76b9319d10d5
       FATSECRET_SCOPE: basic
       FATSECRET_TOKEN_URL: https://oauth.fatsecret.com/connect/token
     depends_on:
@@ -205,6 +205,7 @@ services:
       AUTH_SERVICE_URI: http://user-service:8091
       LEDGER_SERVICE_URI: http://calorie-service:8092
       PRODUCT_SERVICE_URI: http://api-connection-service:8093
+      FOODSECRET_SERVICE_URI: http://fatsecret-service:8095
       KAFKA_BOOTSTRAP: kafka-0-s:9092,kafka-1-s:9092,kafka-2-s:9092
       KAFKA_CONSUMER_GROUP: ledger-service-consumer
     depends_on:

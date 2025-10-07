@@ -24,21 +24,24 @@ public class UserController {
 
     @PostMapping("/setuserdetails")
     public ResponseEntity<UserDetailsResponse> setUserDetails(@RequestBody UserDetailsDto userDetails,
-                                                             @RequestParam("X-UserID-X")Long userId){
-        UserDetailsResponse userDetailsResponse = userService.saveUserDetails(userDetails, userId);
+                                                              @RequestHeader("X-User-ID")String userId){
+        Long id = Long.valueOf(userId);
+        UserDetailsResponse userDetailsResponse = userService.saveUserDetails(userDetails, id);
         return ResponseEntity.ok(userDetailsResponse);
     }
 
     @PostMapping("/updateuserdetails")
     public ResponseEntity<String>  updateUserDetails(@RequestBody UpdateUserDetailsDto updateUserDetailsDto,
-                                                     @RequestParam("X-UserID-X")Long userId){
-        return ResponseEntity.ok(userService.updateUserDetails(updateUserDetailsDto, userId));
+                                                     @RequestHeader("X-User-ID")String userId){
+        Long id = Long.valueOf(userId);
+        return ResponseEntity.ok(userService.updateUserDetails(updateUserDetailsDto, id));
     }
 
     @GetMapping("/newWeighing")
     public ResponseEntity<BigDecimal> setNewWeighing(@RequestParam("new_weight")BigDecimal newWeight,
-                                                             @RequestParam("X-UserID-X")Long userId){
-        return ResponseEntity.ok(userService.setNewWeight(newWeight, userId));
+                                                     @RequestHeader("X-User-ID")String userId){
+        Long id = Long.valueOf(userId);
+        return ResponseEntity.ok(userService.setNewWeight(newWeight, id));
     }
 
 
