@@ -17,6 +17,12 @@
 
 
     <modules>
+        <module>core</module>
+        <module>api-gateway</module>
+        <module>user-service</module>
+        <module>calorie-service</module>
+        <module>api-conection-service</module>
+        <module>FoodSecretApiConnection</module>
     </modules>
 
     <dependencies>

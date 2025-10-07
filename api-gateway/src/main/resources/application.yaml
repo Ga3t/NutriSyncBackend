@@ -2,8 +2,6 @@ server:
   port: 8090
 debug: true
 spring:
-  main:
-    web-application-type: reactive
   application:
     name: api-gateway
   cloud:
